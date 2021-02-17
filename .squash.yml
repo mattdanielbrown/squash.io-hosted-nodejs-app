@@ -1,0 +1,19 @@
+deployments:
+  MyApp:
+    dockerimage: ubuntu:16.04
+    build_steps:
+      - >
+        DEBIAN_FRONTEND=noninteractive apt-get update &&
+        DEBIAN_FRONTEND=noninteractive apt-get -y install 
+        curl git sudo build-essential mongodb
+      - curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+      - >
+        DEBIAN_FRONTEND=noninteractive apt-get update &&
+        DEBIAN_FRONTEND=noninteractive apt-get -y install nodejs
+      - cd ~/code
+      - npm install
+    launch_steps:
+      - service mongodb start
+      - cd ~/code
+      - npm start
+    port_forwarding: 80:8000
